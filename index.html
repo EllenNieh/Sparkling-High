@@ -1,0 +1,4464 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sparkling High｜我們的初見面與心動晴空</title>
+
+<style>
+:root{
+    --blue:#65bce6;
+    --blue-dark:#317da5;
+    --blue-light:#eefaff;
+    --sky:#c9efff;
+    --yellow:#ffe596;
+    --pink:#ffb8c9;
+    --green:#63bd98;
+    --red:#e77e96;
+    --text:#36596b;
+    --muted:#91a7b2;
+    --white:#ffffff;
+    --line:#dceef5;
+    --shadow:0 18px 55px rgba(49,125,165,.14);
+    --soft-shadow:0 8px 25px rgba(49,125,165,.10);
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:
+        "Noto Sans TC",
+        "Microsoft JhengHei",
+        Arial,
+        sans-serif;
+    color:var(--text);
+    background:
+        linear-gradient(
+            180deg,
+            #b9eaff 0%,
+            #e9f8ff 30%,
+            #fffdf7 70%,
+            #f5fbff 100%
+        );
+}
+
+/* =========================
+   背景裝飾
+========================= */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.5;
+    background-image:
+        radial-gradient(circle at 12% 20%, white 0 2px, transparent 3px),
+        radial-gradient(circle at 82% 14%, white 0 3px, transparent 4px),
+        radial-gradient(circle at 70% 72%, white 0 2px, transparent 3px),
+        radial-gradient(circle at 25% 85%, #ffe596 0 2px, transparent 3px);
+    background-size:180px 180px,230px 230px,260px 260px,320px 320px;
+    z-index:-2;
+}
+
+.cloud{
+    position:fixed;
+    width:180px;
+    height:42px;
+    border-radius:50px;
+    background:rgba(255,255,255,.65);
+    z-index:-1;
+}
+
+.cloud::before,
+.cloud::after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    background:inherit;
+}
+
+.cloud::before{
+    width:72px;
+    height:72px;
+    left:28px;
+    bottom:7px;
+}
+
+.cloud::after{
+    width:85px;
+    height:85px;
+    left:85px;
+    bottom:0;
+}
+
+.cloud-one{
+    left:-60px;
+    top:110px;
+}
+
+.cloud-two{
+    right:-70px;
+    top:360px;
+    transform:scale(1.2);
+}
+
+.hidden{
+    display:none !important;
+}
+
+/* =========================
+   開始畫面
+========================= */
+
+.start-screen{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px 20px;
+}
+
+.start-card{
+    width:min(760px,100%);
+    padding:55px;
+    background:rgba(255,255,255,.94);
+    border-radius:38px;
+    box-shadow:var(--shadow);
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.start-card::before{
+    content:"";
+    position:absolute;
+    width:280px;
+    height:280px;
+    right:-130px;
+    top:-130px;
+    background:#dff5ff;
+    border-radius:50%;
+}
+
+.start-card::after{
+    content:"✦";
+    position:absolute;
+    right:95px;
+    top:65px;
+    color:white;
+    font-size:32px;
+}
+
+.start-badge{
+    display:inline-block;
+    padding:8px 17px;
+    border-radius:999px;
+    background:#eefaff;
+    color:var(--blue-dark);
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.start-title{
+    margin:20px 0 0;
+    font-size:clamp(36px,6vw,62px);
+    line-height:1.05;
+    color:#276f97;
+    letter-spacing:-3px;
+}
+
+.start-title span{
+    display:block;
+    color:#65bce6;
+}
+
+.start-description{
+    max-width:570px;
+    margin:23px auto 32px;
+    color:#78919e;
+    line-height:1.9;
+}
+
+.nickname-area{
+    width:min(430px,100%);
+    margin:auto;
+    text-align:left;
+}
+
+.nickname-area label{
+    display:block;
+    margin-bottom:8px;
+    font-size:14px;
+    font-weight:900;
+    color:#42687a;
+}
+
+.nickname-area input{
+    width:100%;
+    padding:15px 17px;
+    border:2px solid #dceef5;
+    border-radius:17px;
+    outline:none;
+    font-size:16px;
+    color:#36596b;
+    background:#fbfeff;
+}
+
+.nickname-area input:focus{
+    border-color:#74c7ea;
+    box-shadow:0 0 0 4px rgba(116,199,234,.13);
+}
+
+.start-button{
+    margin-top:18px;
+    border:0;
+    border-radius:999px;
+    padding:15px 40px;
+    color:white;
+    background:linear-gradient(135deg,#64c2eb,#3e91c2);
+    font-size:16px;
+    font-weight:900;
+    cursor:pointer;
+    box-shadow:0 10px 25px rgba(62,145,194,.25);
+    transition:.2s;
+}
+
+.start-button:hover{
+    transform:translateY(-2px);
+}
+
+/* =========================
+   遊戲頂部
+========================= */
+
+.game-screen{
+    display:none;
+    min-height:100vh;
+}
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:30;
+    height:76px;
+    padding:0 28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:rgba(255,255,255,.87);
+    border-bottom:1px solid rgba(68,142,181,.12);
+    backdrop-filter:blur(15px);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.brand-icon{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,#65c6ed,#398fbe);
+    color:white;
+    font-size:21px;
+    box-shadow:0 7px 18px rgba(57,143,190,.2);
+}
+
+.brand strong{
+    display:block;
+    color:#2d759b;
+    font-size:15px;
+    letter-spacing:1px;
+}
+
+.brand small{
+    color:#9aadb6;
+    font-size:10px;
+    letter-spacing:1px;
+}
+
+.now-playing{
+    padding:9px 15px;
+    border-radius:999px;
+    background:#f2fbff;
+    border:1px solid #dceff6;
+    color:#5d91a8;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+/* =========================
+   主版面
+========================= */
+
+.game-layout{
+    width:min(1450px,calc(100% - 42px));
+    margin:25px auto 60px;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 370px;
+    gap:22px;
+    align-items:start;
+}
+
+.story-column{
+    min-width:0;
+}
+
+/* =========================
+   情境
+========================= */
+
+.scene-card{
+    background:rgba(255,255,255,.95);
+    border-radius:32px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    border:1px solid rgba(255,255,255,.95);
+}
+
+.scene-banner{
+    min-height:220px;
+    padding:35px 42px;
+    position:relative;
+    overflow:hidden;
+    background:
+        linear-gradient(
+            135deg,
+            #8ed6f4,
+            #c4edff 58%,
+            #fff0ad
+        );
+}
+
+.scene-banner::before{
+    content:"☁";
+    position:absolute;
+    right:15px;
+    top:-50px;
+    color:rgba(255,255,255,.35);
+    font-size:180px;
+}
+
+.scene-banner::after{
+    content:"✦  ✧  ✦";
+    position:absolute;
+    right:38px;
+    bottom:25px;
+    color:rgba(255,255,255,.8);
+    font-size:18px;
+    letter-spacing:12px;
+}
+
+.scene-index{
+    position:relative;
+    z-index:2;
+    display:inline-block;
+    padding:7px 13px;
+    border-radius:999px;
+    background:rgba(255,255,255,.65);
+    color:#4385a6;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.scene-title{
+    position:relative;
+    z-index:2;
+    margin:18px 0 0;
+    color:#245f7f;
+    font-size:clamp(27px,4vw,41px);
+    line-height:1.2;
+}
+
+.scene-tag{
+    position:relative;
+    z-index:2;
+    margin-top:11px;
+    color:#4e8098;
+    font-size:13px;
+    font-weight:800;
+}
+
+.scene-content{
+    padding:37px 42px 42px;
+}
+
+.scene-label{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin-bottom:18px;
+    color:#6ba8c3;
+    font-size:12px;
+    font-weight:1000;
+    letter-spacing:2px;
+}
+
+.scene-label::before{
+    content:"";
+    width:27px;
+    height:3px;
+    background:#76c8e9;
+    border-radius:99px;
+}
+
+.situation p{
+    margin:0 0 15px;
+    font-size:16px;
+    line-height:2;
+    color:#486878;
+}
+
+.character-entrance{
+    margin-top:25px;
+    padding:13px 16px;
+    border-radius:15px;
+    background:#f3fbfe;
+    border:1px solid #e1f1f6;
+    color:#6b8c9a;
+    font-size:13px;
+}
+
+.character-entrance strong{
+    color:#3783a8;
+}
+
+.dialogue{
+    display:flex;
+    flex-direction:column;
+    gap:11px;
+    margin-top:20px;
+}
+
+.dialogue-line{
+    padding:14px 17px;
+    border-left:4px solid #79c8e7;
+    border-radius:0 15px 15px 0;
+    background:#f7fcfe;
+    color:#426372;
+    line-height:1.8;
+}
+
+.dialogue-line strong{
+    color:#3482a9;
+}
+
+/* =========================
+   選擇
+========================= */
+
+.choice-section{
+    margin-top:20px;
+    padding:27px;
+    background:rgba(255,255,255,.95);
+    border-radius:28px;
+    box-shadow:var(--soft-shadow);
+}
+
+.choice-header{
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:17px;
+}
+
+.choice-header h2{
+    margin:0;
+    color:#346f8d;
+    font-size:21px;
+}
+
+.choice-header span{
+    color:#9aafb9;
+    font-size:11px;
+}
+
+.choice-list{
+    display:grid;
+    gap:12px;
+}
+
+.choice-button{
+    width:100%;
+    padding:17px 45px 17px 18px;
+    border:1px solid #d9edf5;
+    border-radius:18px;
+    background:#fbfeff;
+    color:#426273;
+    text-align:left;
+    font-size:15px;
+    line-height:1.6;
+    cursor:pointer;
+    transition:.2s;
+    position:relative;
+}
+
+.choice-button::after{
+    content:"→";
+    position:absolute;
+    right:19px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#65b7db;
+    font-weight:1000;
+}
+
+.choice-button:hover{
+    transform:translateX(5px);
+    border-color:#8ecfe9;
+    background:#f1fbff;
+    box-shadow:0 8px 20px rgba(65,151,194,.1);
+}
+
+.choice-button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+/* =========================
+   右側：只有好感度
+========================= */
+
+.status-panel{
+    position:sticky;
+    top:99px;
+    background:rgba(255,255,255,.95);
+    border-radius:30px;
+    padding:22px;
+    box-shadow:var(--shadow);
+    border:1px solid rgba(255,255,255,.95);
+}
+
+.status-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    padding:2px 4px 17px;
+}
+
+.status-header h2{
+    margin:0;
+    color:#2f7094;
+    font-size:21px;
+}
+
+.status-header span{
+    color:#9badb5;
+    font-size:10px;
+    letter-spacing:1px;
+}
+
+.character-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.character-card{
+    display:grid;
+    grid-template-columns:62px minmax(0,1fr);
+    gap:12px;
+    padding:10px;
+    border-radius:20px;
+    background:linear-gradient(135deg,#fbfeff,#f2faff);
+    border:1px solid #e2f0f5;
+    transition:.25s;
+    overflow:hidden;
+}
+
+.character-card.active{
+    border-color:#8dcee8;
+    box-shadow:0 8px 22px rgba(62,147,190,.14);
+    transform:translateX(-4px);
+}
+
+.character-photo{
+    width:62px;
+    height:76px;
+    border-radius:15px;
+    overflow:hidden;
+    position:relative;
+    background:linear-gradient(135deg,#d9f4ff,#f8fdff);
+}
+
+.character-photo img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center top;
+}
+
+.photo-fallback{
+    position:absolute;
+    inset:0;
+    display:none;
+    place-items:center;
+    color:#4d9bc0;
+    font-size:17px;
+    font-weight:1000;
+}
+
+.character-info{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.character-name-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:4px;
+}
+
+.character-name{
+    color:#376e87;
+    font-size:13px;
+    font-weight:1000;
+}
+
+.character-score{
+    color:#3184aa;
+    font-size:15px;
+    font-weight:1000;
+}
+
+.character-cn{
+    margin-top:2px;
+    color:#9bafb9;
+    font-size:10px;
+}
+
+.affection-bar{
+    width:100%;
+    height:7px;
+    margin-top:9px;
+    overflow:hidden;
+    border-radius:99px;
+    background:#e5f1f6;
+}
+
+.affection-fill{
+    width:0;
+    height:100%;
+    border-radius:99px;
+    background:linear-gradient(90deg,#77cbea,#489bc4);
+    transition:width .5s ease;
+}
+
+.character-card.highest .affection-fill{
+    background:linear-gradient(90deg,#ffd87a,#ff9eb4);
+}
+
+.affection-text{
+    display:flex;
+    justify-content:space-between;
+    margin-top:5px;
+    color:#a3b4bc;
+    font-size:9px;
+}
+
+/* =========================
+   中央結果
+========================= */
+
+.result-overlay{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:25px;
+    background:rgba(31,70,91,.27);
+    backdrop-filter:blur(6px);
+}
+
+.result-card{
+    width:min(700px,100%);
+    max-height:88vh;
+    overflow:auto;
+    padding:32px;
+    border-radius:31px;
+    background:rgba(255,255,255,.98);
+    box-shadow:0 30px 90px rgba(28,72,96,.27);
+    animation:resultIn .3s ease;
+}
+
+@keyframes resultIn{
+    from{
+        opacity:0;
+        transform:translateY(25px) scale(.97);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.result-heading{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding-bottom:18px;
+    border-bottom:1px solid #edf3f6;
+}
+
+.result-avatar{
+    width:68px;
+    height:68px;
+    border-radius:19px;
+    overflow:hidden;
+    flex:none;
+    background:#e4f7ff;
+}
+
+.result-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.result-title-area small{
+    color:#9aadb7;
+    font-size:10px;
+    letter-spacing:2px;
+    font-weight:1000;
+}
+
+.result-title-area h2{
+    margin:4px 0 0;
+    color:#2d7398;
+    font-size:21px;
+}
+
+.result-story{
+    padding:23px 0 18px;
+}
+
+.result-story p{
+    margin:0 0 12px;
+    color:#4b6977;
+    line-height:1.9;
+}
+
+.change-title{
+    margin:5px 0 10px;
+    color:#6f909e;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.change-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:20px;
+}
+
+.change-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 14px;
+    border-radius:13px;
+    background:#f6fafc;
+}
+
+.change-item-name{
+    font-weight:900;
+    color:#557482;
+}
+
+.change-positive{
+    color:#36a477;
+    font-weight:1000;
+}
+
+.change-negative{
+    color:#df718b;
+    font-weight:1000;
+}
+
+.continue-button{
+    width:100%;
+    padding:15px;
+    border:0;
+    border-radius:15px;
+    color:white;
+    background:linear-gradient(135deg,#63c0e9,#398fc1);
+    font-weight:1000;
+    cursor:pointer;
+}
+
+/* =========================
+   QTE
+========================= */
+
+.qte-overlay{
+    position:fixed;
+    inset:0;
+    z-index:200;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    background:rgba(29,63,82,.73);
+    backdrop-filter:blur(8px);
+}
+
+.qte-card{
+    width:min(620px,100%);
+    padding:32px;
+    border-radius:30px;
+    background:white;
+    box-shadow:0 30px 90px rgba(0,0,0,.3);
+    text-align:center;
+}
+
+.qte-badge{
+    display:inline-block;
+    padding:7px 14px;
+    border-radius:999px;
+    background:#fff2c6;
+    color:#98751c;
+    font-size:11px;
+    font-weight:1000;
+    letter-spacing:2px;
+}
+
+.qte-card h2{
+    margin:17px 0 8px;
+    color:#2f7194;
+    font-size:28px;
+}
+
+.qte-card p{
+    color:#718994;
+    line-height:1.8;
+}
+
+.qte-timer{
+    width:105px;
+    height:105px;
+    margin:23px auto 15px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    border:8px solid #e6f3f8;
+    color:#4d9fc5;
+    font-size:30px;
+    font-weight:1000;
+}
+
+.qte-progress{
+    width:100%;
+    height:7px;
+    margin-bottom:20px;
+    overflow:hidden;
+    border-radius:99px;
+    background:#e6f1f5;
+}
+
+.qte-progress-bar{
+    width:100%;
+    height:100%;
+    background:linear-gradient(90deg,#70c9e9,#4b9bc1);
+}
+
+.qte-options{
+    display:grid;
+    gap:10px;
+}
+
+.qte-button{
+    border:1px solid #d7ebf3;
+    border-radius:15px;
+    padding:15px;
+    background:#f8fdff;
+    color:#496b7b;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.qte-button:hover{
+    background:#edfaff;
+}
+
+.qte-result{
+    margin-top:20px;
+    padding:18px;
+    border-radius:17px;
+    background:#f5fbfd;
+    text-align:left;
+}
+
+.qte-result p{
+    margin:0 0 10px;
+}
+
+/* =========================
+   結局
+========================= */
+
+.ending-screen{
+    display:none;
+    min-height:100vh;
+    padding:40px 20px 70px;
+}
+
+.ending-card{
+    width:min(900px,100%);
+    margin:auto;
+    padding:38px;
+    border-radius:35px;
+    background:rgba(255,255,255,.95);
+    box-shadow:var(--shadow);
+}
+
+.ending-photo{
+    width:145px;
+    height:185px;
+    margin:0 auto 20px;
+    border-radius:25px;
+    overflow:hidden;
+    background:#dff5ff;
+}
+
+.ending-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.ending-eyebrow{
+    text-align:center;
+    color:#7fa2b2;
+    font-size:11px;
+    font-weight:1000;
+    letter-spacing:3px;
+}
+
+.ending-title{
+    text-align:center;
+    margin:10px 0 5px;
+    color:#2e7398;
+    font-size:34px;
+}
+
+.ending-character{
+    text-align:center;
+    color:#91a7b2;
+    font-size:13px;
+}
+
+.ending-story{
+    max-width:720px;
+    margin:30px auto;
+    padding:27px;
+    border-radius:23px;
+    background:#f7fcfe;
+}
+
+.ending-story p{
+    margin:0 0 14px;
+    color:#496a78;
+    line-height:2;
+}
+
+.final-scores{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:25px;
+}
+
+.final-score{
+    padding:13px;
+    border-radius:15px;
+    background:#f5fafc;
+    text-align:center;
+}
+
+.final-score strong{
+    display:block;
+    color:#367792;
+}
+
+.final-score span{
+    color:#72a0b3;
+    font-size:18px;
+    font-weight:1000;
+}
+
+.ending-actions{
+    display:flex;
+    gap:12px;
+    margin-top:25px;
+}
+
+.ending-button{
+    flex:1;
+    padding:15px;
+    border:0;
+    border-radius:15px;
+    background:#63bce4;
+    color:white;
+    font-weight:1000;
+    cursor:pointer;
+}
+
+.ending-button.secondary{
+    background:#eaf7fc;
+    color:#47809d;
+}
+
+/* =========================
+   RWD
+========================= */
+
+@media(max-width:1050px){
+    .game-layout{
+        grid-template-columns:minmax(0,1fr) 320px;
+    }
+
+    .status-panel{
+        top:90px;
+    }
+}
+
+@media(max-width:850px){
+    .game-layout{
+        grid-template-columns:1fr;
+    }
+
+    .status-panel{
+        position:relative;
+        top:auto;
+        order:2;
+    }
+
+    .character-list{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+    }
+
+    .story-column{
+        order:1;
+    }
+}
+
+@media(max-width:600px){
+    .topbar{
+        height:auto;
+        min-height:68px;
+        padding:10px 15px;
+    }
+
+    .now-playing{
+        display:none;
+    }
+
+    .game-layout{
+        width:calc(100% - 22px);
+        margin-top:12px;
+    }
+
+    .scene-banner{
+        padding:28px 23px;
+        min-height:190px;
+    }
+
+    .scene-content{
+        padding:28px 23px;
+    }
+
+    .choice-section{
+        padding:20px;
+    }
+
+    .character-list{
+        grid-template-columns:1fr;
+    }
+
+    .result-card{
+        padding:23px;
+    }
+
+    .final-scores{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .ending-card{
+        padding:23px;
+    }
+
+    .ending-actions{
+        flex-direction:column;
+    }
+
+    .start-card{
+        padding:38px 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="cloud cloud-one"></div>
+<div class="cloud cloud-two"></div>
+
+<!-- =========================
+     開始畫面
+========================= -->
+
+<section id="startScreen" class="start-screen">
+    <div class="start-card">
+
+        <div class="start-badge">
+            ✦ TWS-INSPIRED SCHOOL UNIVERSE ✦
+        </div>
+
+        <h1 class="start-title">
+            Sparkling High
+            <span>心動晴空</span>
+        </h1>
+
+        <p class="start-description">
+            在一個充滿陽光、音樂與青春的校園裡，
+            每一次偶遇、每一句話，都可能讓某個人的心動值悄悄增加。
+        </p>
+
+        <div class="nickname-area">
+            <label for="nicknameInput">你的暱稱</label>
+            <input
+                id="nicknameInput"
+                type="text"
+                maxlength="20"
+                placeholder="輸入你想在劇情中使用的名字"
+            >
+        </div>
+
+        <button id="startButton" class="start-button">
+            開始我們的故事 ✦
+        </button>
+
+    </div>
+</section>
+
+
+<!-- =========================
+     遊戲畫面
+========================= -->
+
+<section id="gameScreen" class="game-screen">
+
+    <header class="topbar">
+
+        <div class="brand">
+            <div class="brand-icon">✦</div>
+
+            <div>
+                <strong>SPARKLING HIGH</strong>
+                <small>OUR FIRST LIGHT · SCHOOL STORY</small>
+            </div>
+        </div>
+
+        <div class="now-playing">
+            ♫ NOW PLAYING · OUR FIRST LIGHT
+        </div>
+
+    </header>
+
+
+    <main class="game-layout">
+
+        <!-- =====================
+             左側：劇情＋選擇
+        ====================== -->
+
+        <section class="story-column">
+
+            <article class="scene-card">
+
+                <div class="scene-banner">
+
+                    <div id="sceneIndex" class="scene-index">
+                        SCENE 01
+                    </div>
+
+                    <h1 id="sceneTitle" class="scene-title">
+                        晨光下的走廊
+                    </h1>
+
+                    <div id="sceneTag" class="scene-tag">
+                        FIRST SPARK
+                    </div>
+
+                </div>
+
+
+                <div class="scene-content">
+
+                    <div class="scene-label">
+                        SITUATION
+                    </div>
+
+                    <div id="situation" class="situation"></div>
+
+                    <div id="characterEntrance"
+                         class="character-entrance">
+                    </div>
+
+                    <div id="dialogue"
+                         class="dialogue">
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <section class="choice-section">
+
+                <div class="choice-header">
+
+                    <h2>你的選擇</h2>
+
+                    <span>
+                        YOUR CHOICE
+                    </span>
+
+                </div>
+
+                <div id="choiceList"
+                     class="choice-list">
+                </div>
+
+            </section>
+
+        </section>
+
+
+        <!-- =====================
+             右側：只有好感度
+        ====================== -->
+
+        <aside class="status-panel">
+
+            <div class="status-header">
+
+                <h2>♥ 好感度</h2>
+
+                <span>
+                    HEART METER
+                </span>
+
+            </div>
+
+            <div id="characterList"
+                 class="character-list">
+            </div>
+
+        </aside>
+
+    </main>
+
+</section>
+
+
+<!-- =========================
+     中央結果視窗
+========================= -->
+
+<div id="resultOverlay"
+     class="result-overlay">
+
+    <div class="result-card">
+
+        <div id="resultHeading"
+             class="result-heading">
+        </div>
+
+        <div id="resultStory"
+             class="result-story">
+        </div>
+
+        <div class="change-title">
+            HEART CHANGE
+        </div>
+
+        <div id="changeList"
+             class="change-list">
+        </div>
+
+        <button id="continueButton"
+                class="continue-button">
+            繼續劇情 →
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     QTE
+========================= -->
+
+<div id="qteOverlay"
+     class="qte-overlay">
+
+    <div class="qte-card">
+
+        <div class="qte-badge">
+            ✦ SPECIAL MOMENT ✦
+        </div>
+
+        <h2 id="qteTitle">
+            突然發生的事情！
+        </h2>
+
+        <p id="qteDescription"></p>
+
+        <div id="qteTimer"
+             class="qte-timer">
+            8
+        </div>
+
+        <div class="qte-progress">
+            <div id="qteProgressBar"
+                 class="qte-progress-bar">
+            </div>
+        </div>
+
+        <div id="qteOptions"
+             class="qte-options">
+        </div>
+
+        <div id="qteResult"
+             class="qte-result hidden">
+        </div>
+
+        <button id="qteContinue"
+                class="continue-button hidden">
+            繼續劇情 →
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     結局
+========================= -->
+
+<section id="endingScreen"
+         class="ending-screen">
+
+    <div class="ending-card">
+
+        <div id="endingPhoto"
+             class="ending-photo">
+        </div>
+
+        <div class="ending-eyebrow">
+            SPARKLING HIGH · FINAL CHAPTER
+        </div>
+
+        <h1 id="endingTitle"
+            class="ending-title">
+        </h1>
+
+        <div id="endingCharacter"
+             class="ending-character">
+        </div>
+
+        <div id="endingStory"
+             class="ending-story">
+        </div>
+
+        <div id="finalScores"
+             class="final-scores">
+        </div>
+
+        <div class="ending-actions">
+
+            <button id="downloadButton"
+                    class="ending-button">
+                下載最終結果圖片
+            </button>
+
+            <button id="restartButton"
+                    class="ending-button secondary">
+                重新開始
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<audio id="endingBGM"
+       loop
+       preload="auto">
+</audio>
+
+
+<script>
+
+/* ============================================================
+   角色資料
+============================================================ */
+
+const characters = {
+
+    shinyu:{
+        name:"SHINYU",
+        chinese:"申晶㬊",
+        image:"images/shinyu.jpg"
+    },
+
+    dohoon:{
+        name:"DOHOON",
+        chinese:"金道勳",
+        image:"images/dohoon.jpg"
+    },
+
+    youngjae:{
+        name:"YOUNGJAE",
+        chinese:"崔英宰",
+        image:"images/youngjae.jpg"
+    },
+
+    hanjin:{
+        name:"HANJIN",
+        chinese:"韓振",
+        image:"images/hanjin.jpg"
+    },
+
+    jihoon:{
+        name:"JIHOON",
+        chinese:"韓志薰",
+        image:"images/jihoon.jpg"
+    },
+
+    kyungmin:{
+        name:"KYUNGMIN",
+        chinese:"李炅潣",
+        image:"images/kyungmin.jpg"
+    }
+
+};
+
+
+/* ============================================================
+   結局音樂
+============================================================ */
+
+const endingMusic = {
+
+    shinyu:"audio/shinyu.mp3",
+    dohoon:"audio/dohoon.mp3",
+    youngjae:"audio/youngjae.mp3",
+    hanjin:"audio/hanjin.mp3",
+    jihoon:"audio/jihoon.mp3",
+    kyungmin:"audio/kyungmin.mp3"
+
+};
+
+
+/* ============================================================
+   遊戲狀態
+============================================================ */
+
+const state = {
+
+    playerName:"",
+
+    affection:{
+        shinyu:0,
+        dohoon:0,
+        youngjae:0,
+        hanjin:0,
+        jihoon:0,
+        kyungmin:0
+    },
+
+    runScenes:[],
+    currentSceneIndex:0,
+
+    qteQueue:[],
+    qteUsed:0,
+    qteTriggerPositions:[],
+
+    sceneChoiceMade:false,
+
+    gameStarted:false,
+    ending:null,
+
+    waitingForQTE:false,
+    qteResolved:false
+
+};
+
+
+/* ============================================================
+   DOM
+============================================================ */
+
+const startScreen =
+    document.getElementById("startScreen");
+
+const gameScreen =
+    document.getElementById("gameScreen");
+
+const endingScreen =
+    document.getElementById("endingScreen");
+
+const nicknameInput =
+    document.getElementById("nicknameInput");
+
+const startButton =
+    document.getElementById("startButton");
+
+const sceneIndex =
+    document.getElementById("sceneIndex");
+
+const sceneTitle =
+    document.getElementById("sceneTitle");
+
+const sceneTag =
+    document.getElementById("sceneTag");
+
+const situation =
+    document.getElementById("situation");
+
+const characterEntrance =
+    document.getElementById("characterEntrance");
+
+const dialogue =
+    document.getElementById("dialogue");
+
+const choiceList =
+    document.getElementById("choiceList");
+
+const characterList =
+    document.getElementById("characterList");
+
+const resultOverlay =
+    document.getElementById("resultOverlay");
+
+const resultHeading =
+    document.getElementById("resultHeading");
+
+const resultStory =
+    document.getElementById("resultStory");
+
+const changeList =
+    document.getElementById("changeList");
+
+const continueButton =
+    document.getElementById("continueButton");
+
+const qteOverlay =
+    document.getElementById("qteOverlay");
+
+const qteTitle =
+    document.getElementById("qteTitle");
+
+const qteDescription =
+    document.getElementById("qteDescription");
+
+const qteTimer =
+    document.getElementById("qteTimer");
+
+const qteProgressBar =
+    document.getElementById("qteProgressBar");
+
+const qteOptions =
+    document.getElementById("qteOptions");
+
+const qteResult =
+    document.getElementById("qteResult");
+
+const qteContinue =
+    document.getElementById("qteContinue");
+
+const endingPhoto =
+    document.getElementById("endingPhoto");
+
+const endingTitle =
+    document.getElementById("endingTitle");
+
+const endingCharacter =
+    document.getElementById("endingCharacter");
+
+const endingStory =
+    document.getElementById("endingStory");
+
+const finalScores =
+    document.getElementById("finalScores");
+
+const downloadButton =
+    document.getElementById("downloadButton");
+
+const restartButton =
+    document.getElementById("restartButton");
+
+const endingBGM =
+    document.getElementById("endingBGM");
+
+
+/* ============================================================
+   工具
+============================================================ */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+function player(){
+
+    return escapeHTML(state.playerName);
+
+}
+
+
+function shuffle(array){
+
+    const result = [...array];
+
+    for(let i=result.length-1;i>0;i--){
+
+        const j =
+            Math.floor(Math.random()*(i+1));
+
+        [result[i],result[j]] =
+            [result[j],result[i]];
+
+    }
+
+    return result;
+
+}
+
+
+/* ============================================================
+   場景資料
+============================================================ */
+
+const scenePool = [
+
+    {
+        id:"morning-hallway",
+        tag:"FIRST SPARK",
+        title:"晨光下的走廊",
+
+        characters:["shinyu","dohoon"],
+
+        situation:[
+            "第一節課前，校園的走廊還帶著清晨的安靜。",
+            "你拿著剛拿到的課表，站在轉角研究教室位置。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"SHINYU",
+                text:"「你是不是在找教室？」"
+            },
+            {
+                speaker:"DOHOON",
+                text:"「如果迷路了，我可以帶你去啊。」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"「那就麻煩 SHINYU 帶我過去。」",
+                effects:{shinyu:17},
+                result:[
+                    "SHINYU 接過你手上的課表。",
+                    "「跟著我就好。」他說得很平靜，卻刻意放慢了腳步。",
+                    "DOHOON 在後面笑著說：「欸？那我呢？」"
+                ]
+            },
+            {
+                text:"「DOHOON，你帶我去吧！」",
+                effects:{dohoon:17},
+                result:[
+                    "DOHOON 馬上露出得意的笑。",
+                    "「我就知道你會選我。」",
+                    "SHINYU 看了他一眼，沒有說話，只是把課表重新整理好交給你。"
+                ]
+            },
+            {
+                text:"「其實我想自己找找看。」",
+                effects:{shinyu:7,dohoon:7},
+                result:[
+                    "兩個人都愣了一下。",
+                    "最後 DOHOON 笑著說：「好，那至少讓我們陪你走到轉角。」",
+                    "原本陌生的早晨，突然多了兩個同行的人。"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"vending-machine",
+        tag:"SMALL ACCIDENT",
+        title:"自動販賣機前",
+
+        characters:["kyungmin","youngjae"],
+
+        situation:[
+            "午休時間，你在自動販賣機前找著自己想喝的飲料。",
+            "就在你準備投幣時，旁邊突然傳來一聲輕響。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"KYUNGMIN",
+                text:"「啊……我的飲料卡住了。」"
+            },
+            {
+                speaker:"YOUNGJAE",
+                text:"「不要一直踢它。」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"幫 KYUNGMIN 想辦法把飲料拿出來",
+                effects:{kyungmin:18},
+                result:[
+                    "你和 KYUNGMIN 一起研究販賣機。",
+                    "最後飲料終於掉了下來。",
+                    "KYUNGMIN 開心得差點跳起來：「你真的很厲害！」"
+                ]
+            },
+            {
+                text:"聽 YOUNGJAE 的，叫 KYUNGMIN 先不要亂動",
+                effects:{youngjae:16},
+                result:[
+                    "YOUNGJAE 按了一下退款鍵。",
+                    "「先這樣處理比較安全。」",
+                    "KYUNGMIN 小聲說：「好吧……聽你的。」"
+                ]
+            },
+            {
+                text:"「不然我請你們喝一瓶。」",
+                effects:{kyungmin:10,youngjae:10},
+                result:[
+                    "兩個人同時看向你。",
+                    "KYUNGMIN 笑得非常開心。",
+                    "YOUNGJAE 則輕輕說了一句：「謝謝。」"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"library",
+        tag:"QUIET MOMENT",
+        title:"圖書館的最後一個座位",
+
+        characters:["shinyu","youngjae","hanjin"],
+
+        situation:[
+            "午休的圖書館比平常還要安靜。",
+            "你抱著書走進去，卻發現只剩下一個靠窗的位置。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"SHINYU",
+                text:"「這裡有人嗎？」"
+            },
+            {
+                speaker:"YOUNGJAE",
+                text:"「沒有的話，你可以坐這裡。」"
+            },
+            {
+                speaker:"HANJIN",
+                text:"「窗邊的光線很好。」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"坐到 SHINYU 旁邊",
+                effects:{shinyu:17},
+                result:[
+                    "SHINYU 把自己的書往旁邊移了一點。",
+                    "「這樣比較有空間。」",
+                    "你坐下後，他的視線卻偷偷往你這邊停了一下。"
+                ]
+            },
+            {
+                text:"和 YOUNGJAE 一起看書",
+                effects:{youngjae:17},
+                result:[
+                    "YOUNGJAE 把自己看到的頁面推到你面前。",
+                    "「這一段很好看，你可以看看。」",
+                    "原本安靜的午休，變成了很舒服的兩人時間。"
+                ]
+            },
+            {
+                text:"問 HANJIN 要不要一起到窗邊",
+                effects:{hanjin:18},
+                result:[
+                    "HANJIN 愣了一下。",
+                    "接著他笑著拿起相機。",
+                    "「好啊，今天的光線確實很漂亮。」"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"music-room",
+        tag:"MUSIC & SKY",
+        title:"音樂教室的午後",
+
+        characters:["youngjae","dohoon"],
+
+        situation:[
+            "午後的音樂教室只剩下幾個人。",
+            "你經過門口時，聽見裡面傳來一段很柔和的旋律。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"YOUNGJAE",
+                text:"「你也喜歡這首嗎？」"
+            },
+            {
+                speaker:"DOHOON",
+                text:"「我覺得這首很適合放學的時候聽。」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"請 YOUNGJAE 再彈一次",
+                effects:{youngjae:19},
+                result:[
+                    "YOUNGJAE 看著你笑了一下。",
+                    "「好。」",
+                    "他重新彈了一次，這一次你坐得更近了一點。"
+                ]
+            },
+            {
+                text:"和 DOHOON 聊放學後要做什麼",
+                effects:{dohoon:17},
+                result:[
+                    "DOHOON 立刻開始說起一大串計畫。",
+                    "最後他問：「所以你要不要一起？」",
+                    "他的眼神明顯比剛才更加期待。"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"gym",
+        tag:"ENERGY",
+        title:"體育館裡的意外傳球",
+
+        characters:["jihoon","dohoon","kyungmin"],
+
+        situation:[
+            "體育課進行到一半，球場上的氣氛越來越熱鬧。",
+            "你剛轉身，一顆球突然朝你的方向飛過來。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"JIHOON",
+                text:"「小心！」"
+            },
+            {
+                speaker:"DOHOON",
+                text:"「接住！」"
+            },
+            {
+                speaker:"KYUNGMIN",
+                text:"「沒事吧？」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"接住 JIHOON 傳過來的球",
+                effects:{jihoon:19},
+                result:[
+                    "你成功接住球。",
+                    "JIHOON 立刻笑了起來。",
+                    "「很好！就是這樣。」"
+                ]
+            },
+            {
+                text:"笑著跟 DOHOON 擊掌",
+                effects:{dohoon:18},
+                result:[
+                    "DOHOON 和你用力擊掌。",
+                    "「反應很快嘛！」",
+                    "你們兩個同時笑了起來。"
+                ]
+            },
+            {
+                text:"先讓 KYUNGMIN 確認自己沒事",
+                effects:{kyungmin:18},
+                result:[
+                    "KYUNGMIN 原本還有點緊張。",
+                    "看到你先問他，他很快就笑了。",
+                    "「我沒事！你呢？」"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"rain",
+        tag:"RAINY DAY",
+        title:"突然下起的雨",
+
+        characters:["shinyu","hanjin"],
+
+        situation:[
+            "放學鐘聲剛響，天空突然下起大雨。",
+            "你站在校門口，看著完全沒有準備的自己。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"SHINYU",
+                text:"「你沒帶傘？」"
+            },
+            {
+                speaker:"HANJIN",
+                text:"「這裡還有一把。」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"和 SHINYU 一起撐傘",
+                effects:{shinyu:18},
+                result:[
+                    "SHINYU 把傘往你這邊移了一點。",
+                    "「靠近一點，不然會淋到。」",
+                    "雨聲很大，但你們之間卻安靜得剛剛好。"
+                ]
+            },
+            {
+                text:"接受 HANJIN 的傘",
+                effects:{hanjin:19},
+                result:[
+                    "HANJIN 把傘遞給你。",
+                    "「拿去吧，我可以等雨小一點再走。」",
+                    "你看著他的背影，心裡突然有種說不出的感覺。"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"lunch",
+        tag:"LUNCH TIME",
+        title:"午餐時間的小插曲",
+
+        characters:["dohoon","shinyu","youngjae"],
+
+        situation:[
+            "午餐時間，你端著餐盤走進教室。",
+            "三個熟悉的身影剛好都在找位置。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"DOHOON",
+                text:"「這裡！我們這裡還有位置。」"
+            },
+            {
+                speaker:"SHINYU",
+                text:"「你今天吃得比較少？」"
+            },
+            {
+                speaker:"YOUNGJAE",
+                text:"「要不要交換一點？」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"坐到 DOHOON 身邊",
+                effects:{dohoon:18},
+                result:[
+                    "DOHOON 馬上把旁邊的位置拉開。",
+                    "「我還想說你會不會過來。」",
+                    "他的語氣聽起來藏著一點期待。"
+                ]
+            },
+            {
+                text:"把自己不喜歡的菜分給 SHINYU",
+                effects:{shinyu:17},
+                result:[
+                    "SHINYU 看著你遞過去的餐盒。",
+                    "「你記得我不喜歡這個？」",
+                    "你點點頭，他的嘴角悄悄揚了起來。"
+                ]
+            },
+            {
+                text:"和 YOUNGJAE 交換食物",
+                effects:{youngjae:18},
+                result:[
+                    "YOUNGJAE 把自己的餐盒推過來。",
+                    "「這個你應該會喜歡。」",
+                    "你們很自然地交換了彼此喜歡的東西。"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"photo-club",
+        tag:"CAPTURE THE MOMENT",
+        title:"攝影社的窗邊",
+
+        characters:["hanjin","shinyu"],
+
+        situation:[
+            "攝影社的教室裡掛滿了校園照片。",
+            "HANJIN 正在整理剛拍完的照片，SHINYU 則站在窗邊。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"HANJIN",
+                text:"「這張其實拍得不錯。」"
+            },
+            {
+                speaker:"SHINYU",
+                text:"「你又在拍校園了？」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"請 HANJIN 幫你拍一張",
+                effects:{hanjin:19},
+                result:[
+                    "HANJIN 拿起相機。",
+                    "「那就站到窗邊。」",
+                    "快門按下的瞬間，你剛好笑了出來。"
+                ]
+            },
+            {
+                text:"問 SHINYU 剛才在看什麼",
+                effects:{shinyu:17},
+                result:[
+                    "SHINYU 指向窗外。",
+                    "「那邊的天空。」",
+                    "你站到他旁邊，才發現今天的天空真的很好看。"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"poster",
+        tag:"CAMPUS FESTIVAL",
+        title:"校慶海報作戰",
+
+        characters:["youngjae","hanjin","jihoon"],
+
+        situation:[
+            "校慶即將開始，社團教室裡堆滿了紙張、顏料和照片。",
+            "你被臨時抓來一起完成最後一張海報。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"YOUNGJAE",
+                text:"「這裡如果再加一點藍色應該會很好看。」"
+            },
+            {
+                speaker:"HANJIN",
+                text:"「我可以找一張照片放進去。」"
+            },
+            {
+                speaker:"JIHOON",
+                text:"「那我負責把它貼上去！」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"和 YOUNGJAE 一起設計",
+                effects:{youngjae:18},
+                result:[
+                    "你和 YOUNGJAE 一起調整顏色。",
+                    "最後的海報比預想中還要漂亮。",
+                    "他看著成品說：「跟你一起做，好像比較容易想到點子。」"
+                ]
+            },
+            {
+                text:"請 HANJIN 選照片",
+                effects:{hanjin:18},
+                result:[
+                    "HANJIN 很快挑出一張照片。",
+                    "「這張最像我們現在的校園。」",
+                    "照片放上去後，整張海報突然有了故事。"
+                ]
+            },
+            {
+                text:"和 JIHOON 一起把海報貼上牆",
+                effects:{jihoon:19},
+                result:[
+                    "你和 JIHOON 一起搬著海報。",
+                    "「一、二、三！」",
+                    "海報順利貼好，你們忍不住一起歡呼。"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"broadcast",
+        tag:"ON AIR",
+        title:"校園廣播室",
+
+        characters:["youngjae","dohoon"],
+
+        situation:[
+            "你路過廣播室時，門剛好半開。",
+            "裡面的兩個人正在討論今天要播放的歌曲。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"YOUNGJAE",
+                text:"「這首比較適合今天的天氣。」"
+            },
+            {
+                speaker:"DOHOON",
+                text:"「可是我覺得另一首比較有活力。」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"支持 YOUNGJAE 選的歌",
+                effects:{youngjae:18},
+                result:[
+                    "YOUNGJAE 看著你笑了。",
+                    "「那就決定這首。」",
+                    "音樂開始播放，整間廣播室都變得柔和起來。"
+                ]
+            },
+            {
+                text:"支持 DOHOON 的選擇",
+                effects:{dohoon:18},
+                result:[
+                    "DOHOON 興奮地比了一個勝利手勢。",
+                    "「我就知道你懂！」",
+                    "下一秒，整個校園都響起了音樂。"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"stairs",
+        tag:"AFTER SCHOOL",
+        title:"夕陽下的階梯",
+
+        characters:["shinyu","dohoon"],
+
+        situation:[
+            "放學後，校園裡的人逐漸變少。",
+            "你走到階梯時，SHINYU 和 DOHOON 正好從另一側走過來。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"SHINYU",
+                text:"「還不回去？」"
+            },
+            {
+                speaker:"DOHOON",
+                text:"「剛好！一起走吧。」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"跟 SHINYU 一起走",
+                effects:{shinyu:19},
+                result:[
+                    "SHINYU 默默走到你身邊。",
+                    "夕陽把兩個人的影子拉得很長。",
+                    "「今天過得還好嗎？」他突然問。"
+                ]
+            },
+            {
+                text:"跟 DOHOON 一起走",
+                effects:{dohoon:19},
+                result:[
+                    "DOHOON 一路說著今天發生的事情。",
+                    "走到校門口時，他突然問：「明天也一起走？」"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"convenience-store",
+        tag:"AFTER SCHOOL",
+        title:"便利商店的五分鐘",
+
+        characters:["kyungmin","dohoon"],
+
+        situation:[
+            "放學後，你在學校附近的便利商店遇到熟悉的身影。",
+            "KYUNGMIN 手上拿著一堆零食，DOHOON 則正在挑飲料。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"KYUNGMIN",
+                text:"「你也來買東西？」"
+            },
+            {
+                speaker:"DOHOON",
+                text:"「要不要一起走回去？」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"幫 KYUNGMIN 挑零食",
+                effects:{kyungmin:18},
+                result:[
+                    "你幫 KYUNGMIN 挑了一個你覺得不錯的口味。",
+                    "他看著包裝笑了。",
+                    "「好，那我就買這個。」"
+                ]
+            },
+            {
+                text:"和 DOHOON 一起挑飲料",
+                effects:{dohoon:18},
+                result:[
+                    "你們在冰箱前討論了很久。",
+                    "最後 DOHOON 說：「其實跟你一起選，什麼都變得好玩。」"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"darkroom",
+        tag:"MEMORY",
+        title:"暗房裡的照片",
+
+        characters:["hanjin"],
+
+        situation:[
+            "攝影社的暗房裡只亮著微弱的紅色燈光。",
+            "HANJIN 正低頭等待照片慢慢顯影。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"HANJIN",
+                text:"「你看，快出來了。」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"安靜地陪他等",
+                effects:{hanjin:20},
+                result:[
+                    "你沒有說話，只是站在旁邊。",
+                    "照片慢慢浮現出來。",
+                    "HANJIN 看著照片，又看了你一眼。",
+                    "「我很喜歡這種安靜的時候。」"
+                ]
+            },
+            {
+                text:"問他最喜歡哪一張照片",
+                effects:{hanjin:16},
+                result:[
+                    "HANJIN 翻了一會兒相簿。",
+                    "最後，他指向一張校園照片。",
+                    "「這張吧，因為那天的光很好。」"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"experiment",
+        tag:"SCIENCE DAY",
+        title:"實驗課的小意外",
+
+        characters:["shinyu","kyungmin"],
+
+        situation:[
+            "實驗課進行到一半，桌上的器材突然發出輕微的聲音。",
+            "你和旁邊的 KYUNGMIN 同時愣住。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"SHINYU",
+                text:"「先不要碰。」"
+            },
+            {
+                speaker:"KYUNGMIN",
+                text:"「我是不是做錯了？」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"聽 SHINYU 的話先停下來",
+                effects:{shinyu:18},
+                result:[
+                    "SHINYU 很快確認了器材。",
+                    "「沒事，只是步驟太快了。」",
+                    "你點點頭，他露出放心的表情。"
+                ]
+            },
+            {
+                text:"先安慰 KYUNGMIN",
+                effects:{kyungmin:19},
+                result:[
+                    "你告訴 KYUNGMIN 不用緊張。",
+                    "他慢慢放鬆下來。",
+                    "「謝謝，我剛剛真的有點嚇到。」"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"school-yard",
+        tag:"BLUE HOUR",
+        title:"放學後的校園小徑",
+
+        characters:["hanjin","shinyu","kyungmin"],
+
+        situation:[
+            "夕陽快要落下，校園小徑被染成淡淡的金色。",
+            "你剛走過轉角，就遇見三個人。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"HANJIN",
+                text:"「今天的天空很好看。」"
+            },
+            {
+                speaker:"SHINYU",
+                text:"「嗯。」"
+            },
+            {
+                speaker:"KYUNGMIN",
+                text:"「那我們拍一張吧！」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"陪 HANJIN 看夕陽",
+                effects:{hanjin:18},
+                result:[
+                    "HANJIN 和你一起站在樹下。",
+                    "「這種天空，很適合留在照片裡。」"
+                ]
+            },
+            {
+                text:"和 SHINYU 並肩走",
+                effects:{shinyu:19},
+                result:[
+                    "SHINYU 自然地走到你身旁。",
+                    "兩個人沒有說太多話，卻都沒有覺得尷尬。"
+                ]
+            },
+            {
+                text:"答應 KYUNGMIN 一起拍照",
+                effects:{kyungmin:19},
+                result:[
+                    "KYUNGMIN 興奮地把大家拉到一起。",
+                    "快門按下的瞬間，每個人都笑了。"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"sports-festival",
+        tag:"SPORTS FESTIVAL",
+        title:"體育祭的補水時間",
+
+        characters:["jihoon","kyungmin","dohoon"],
+
+        situation:[
+            "體育祭進行到下午，大家都已經累得不行。",
+            "你拿著水走回休息區，三個人正好朝你看過來。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"JIHOON",
+                text:"「辛苦了！」"
+            },
+            {
+                speaker:"KYUNGMIN",
+                text:"「你有沒有喝水？」"
+            },
+            {
+                speaker:"DOHOON",
+                text:"「我剛剛看到一個超好笑的畫面！」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"陪 JIHOON 聊剛才的比賽",
+                effects:{jihoon:19},
+                result:[
+                    "JIHOON 開始認真分析剛才的比賽。",
+                    "聊到最後，他笑著說：「下次一起練。」"
+                ]
+            },
+            {
+                text:"提醒 KYUNGMIN 記得喝水",
+                effects:{kyungmin:18},
+                result:[
+                    "KYUNGMIN 原本還在笑。",
+                    "聽見你的提醒後，他乖乖拿起水。",
+                    "「知道啦，我會照顧好自己的。」"
+                ]
+            },
+            {
+                text:"聽 DOHOON 分享趣事",
+                effects:{dohoon:18},
+                result:[
+                    "DOHOON 馬上開始比手畫腳。",
+                    "你被逗得一直笑，他看著你也跟著笑了。"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"roof",
+        tag:"PRIVATE SKY",
+        title:"屋頂上的風",
+
+        characters:["shinyu","youngjae","jihoon"],
+
+        situation:[
+            "放學後，你意外走上了平常不太有人來的屋頂。",
+            "風很舒服，而那裡已經有人了。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"SHINYU",
+                text:"「你也喜歡這裡？」"
+            },
+            {
+                speaker:"YOUNGJAE",
+                text:"「這裡很安靜。」"
+            },
+            {
+                speaker:"JIHOON",
+                text:"「我只是剛好上來休息！」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"坐到 SHINYU 旁邊",
+                effects:{shinyu:20},
+                result:[
+                    "SHINYU 往旁邊讓出一點位置。",
+                    "你坐下後，兩個人一起看著遠處的天空。"
+                ]
+            },
+            {
+                text:"問 YOUNGJAE 在想什麼",
+                effects:{youngjae:18},
+                result:[
+                    "YOUNGJAE 看著天空。",
+                    "「我在想，如果把今天寫成一首歌，會是什麼樣子。」"
+                ]
+            },
+            {
+                text:"陪 JIHOON 練幾個舞步",
+                effects:{jihoon:20},
+                result:[
+                    "JIHOON 馬上站起來。",
+                    "「好啊！那就現在開始。」",
+                    "夕陽下，你們一起笑著練習。"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"festival-stage",
+        tag:"BIG STAGE",
+        title:"校慶舞台彩排",
+
+        characters:["jihoon","youngjae","dohoon","hanjin"],
+
+        situation:[
+            "校慶前一天，舞台上的燈光正在進行最後測試。",
+            "所有人都忙著準備，而你也被拉進了彩排。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"JIHOON",
+                text:"「等一下跟著我的節拍就好！」"
+            },
+            {
+                speaker:"YOUNGJAE",
+                text:"「音樂我會處理。」"
+            },
+            {
+                speaker:"DOHOON",
+                text:"「氣氛就交給我！」"
+            },
+            {
+                speaker:"HANJIN",
+                text:"「我幫你們拍下來。」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"跟著 JIHOON 練習",
+                effects:{jihoon:20},
+                result:[
+                    "JIHOON 一次又一次陪你練習。",
+                    "最後你終於跟上節拍。",
+                    "「看吧，我就知道你可以。」"
+                ]
+            },
+            {
+                text:"請 YOUNGJAE 再放一次音樂",
+                effects:{youngjae:18},
+                result:[
+                    "YOUNGJAE 調整好音樂。",
+                    "「準備好了就告訴我。」",
+                    "他的聲音讓你莫名安心。"
+                ]
+            },
+            {
+                text:"和 DOHOON 一起炒熱氣氛",
+                effects:{dohoon:20},
+                result:[
+                    "DOHOON 帶著你一起喊口號。",
+                    "整個舞台突然變得非常熱鬧。"
+                ]
+            },
+            {
+                text:"請 HANJIN 幫你拍一張彩排照片",
+                effects:{hanjin:19},
+                result:[
+                    "HANJIN 按下快門。",
+                    "「這張很好看。」",
+                    "他把照片留了下來。"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"bus-stop",
+        tag:"WAITING",
+        title:"放學後的公車站",
+
+        characters:["shinyu","kyungmin"],
+
+        situation:[
+            "天色漸漸變暗，你站在公車站牌前等車。",
+            "過了一會兒，兩個熟悉的人也來到了這裡。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"SHINYU",
+                text:"「還要等多久？」"
+            },
+            {
+                speaker:"KYUNGMIN",
+                text:"「我剛剛看過了，還有十分鐘。」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"和 SHINYU 聊今天的事情",
+                effects:{shinyu:18},
+                result:[
+                    "你們聊著今天發生的小事。",
+                    "公車明明很快就來了，卻覺得時間過得特別快。"
+                ]
+            },
+            {
+                text:"和 KYUNGMIN 玩猜拳打發時間",
+                effects:{kyungmin:19},
+                result:[
+                    "你們很快玩起猜拳。",
+                    "KYUNGMIN 輸了之後不服氣地說：「再一次！」"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"classroom-evening",
+        tag:"LAST BELL",
+        title:"放學後還亮著燈的教室",
+
+        characters:["youngjae","hanjin"],
+
+        situation:[
+            "大部分同學都已經離開了。",
+            "你回到教室拿東西時，發現燈還亮著。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"YOUNGJAE",
+                text:"「你也還沒回去？」"
+            },
+            {
+                speaker:"HANJIN",
+                text:"「剛好，我也還在整理東西。」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"陪 YOUNGJAE 聽一首歌",
+                effects:{youngjae:20},
+                result:[
+                    "YOUNGJAE 把耳機分給你一邊。",
+                    "兩個人安靜地聽完整首歌。",
+                    "沒有太多對話，卻讓人覺得很舒服。"
+                ]
+            },
+            {
+                text:"陪 HANJIN 整理照片",
+                effects:{hanjin:19},
+                result:[
+                    "你們一起整理今天拍的照片。",
+                    "HANJIN 突然說：「今天好像留下很多值得記住的畫面。」"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"late-night-festival",
+        tag:"NIGHT SPARK",
+        title:"校慶前夜的燈串",
+
+        characters:["shinyu","dohoon","youngjae","hanjin","jihoon","kyungmin"],
+
+        situation:[
+            "校慶前一晚，校園掛滿了小燈串。",
+            "你走過操場時，六個人剛好都在幫忙。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"DOHOON",
+                text:"「這邊還差一盞！」"
+            },
+            {
+                speaker:"HANJIN",
+                text:"「等一下，我拍一張。」"
+            },
+            {
+                speaker:"JIHOON",
+                text:"「大家一起來比較快！」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"和 SHINYU 一起掛燈串",
+                effects:{shinyu:20},
+                result:[
+                    "你和 SHINYU 一起把最後一段燈串掛好。",
+                    "燈亮起來的瞬間，兩個人都安靜了一下。"
+                ]
+            },
+            {
+                text:"和 DOHOON 一起忙最後一區",
+                effects:{dohoon:20},
+                result:[
+                    "DOHOON 和你一起快速完成最後一區。",
+                    "「我們效率超高！」他笑著說。"
+                ]
+            },
+            {
+                text:"請 YOUNGJAE 選背景音樂",
+                effects:{youngjae:20},
+                result:[
+                    "YOUNGJAE 選了一首輕快的歌。",
+                    "音樂響起後，整個校園像突然亮了起來。"
+                ]
+            },
+            {
+                text:"請 HANJIN 幫大家拍照",
+                effects:{hanjin:20},
+                result:[
+                    "HANJIN 舉起相機。",
+                    "「好了，看這裡。」",
+                    "快門記住了這個晚上。"
+                ]
+            },
+            {
+                text:"陪 JIHOON 把最後的東西搬完",
+                effects:{jihoon:20},
+                result:[
+                    "你和 JIHOON 一起搬完最後一箱東西。",
+                    "「謝謝你陪我。」"
+                ]
+            },
+            {
+                text:"陪 KYUNGMIN 去拿剩下的材料",
+                effects:{kyungmin:20},
+                result:[
+                    "KYUNGMIN 拉著你一起跑向倉庫。",
+                    "「快點！不然大家會等我們！」"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"morning-cafe",
+        tag:"GOOD MORNING",
+        title:"校門口的早餐店",
+
+        characters:["dohoon","kyungmin"],
+
+        situation:[
+            "早上上學前，你在校門口買早餐。",
+            "剛轉身，就看到兩個熟悉的人也正在排隊。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"DOHOON",
+                text:"「你也吃這家？」"
+            },
+            {
+                speaker:"KYUNGMIN",
+                text:"「這家的麵包真的很好吃。」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"和 DOHOON 一起選早餐",
+                effects:{dohoon:18},
+                result:[
+                    "DOHOON 開始認真分析每一種口味。",
+                    "最後他笑著說：「下次可以一起來。」"
+                ]
+            },
+            {
+                text:"請 KYUNGMIN 推薦一個",
+                effects:{kyungmin:18},
+                result:[
+                    "KYUNGMIN 很認真地替你推薦。",
+                    "「相信我，這個一定好吃。」"
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id:"art-room",
+        tag:"CREATIVE DAY",
+        title:"美術教室的顏料戰",
+
+        characters:["hanjin","youngjae","kyungmin"],
+
+        situation:[
+            "美術教室裡到處都是顏料。",
+            "你剛拿起畫筆，就不小心在桌上留下一個小小的藍色印記。"
+        ],
+
+        dialogue:[
+            {
+                speaker:"HANJIN",
+                text:"「其實這個顏色很好看。」"
+            },
+            {
+                speaker:"YOUNGJAE",
+                text:"「可以把它變成天空。」"
+            },
+            {
+                speaker:"KYUNGMIN",
+                text:"「那我也來！」"
+            }
+        ],
+
+        choices:[
+            {
+                text:"和 HANJIN 一起完成天空",
+                effects:{hanjin:19},
+                result:[
+                    "你和 HANJIN 一起把藍色慢慢延伸。",
+                    "最後畫面看起來像真正的天空。"
+                ]
+            },
+            {
+                text:"聽 YOUNGJAE 的想法",
+                effects:{youngjae:18},
+                result:[
+                    "YOUNGJAE 指著畫面。",
+                    "「如果這裡再加一點白色，會更像雲。」"
+                ]
+            },
+            {
+                text:"讓 KYUNGMIN 加入",
+                effects:{kyungmin:20},
+                result:[
+                    "KYUNGMIN 開心地拿起畫筆。",
+                    "結果三個人最後一起完成了一幅意外好看的畫。"
+                ]
+            }
+        ]
+    }
+
+];
+
+
+/* ============================================================
+   QTE 資料
+============================================================ */
+
+const qtePool = [
+
+    {
+        title:"突然掉下來的東西！",
+        description:"走廊上的物品突然從架子上滑下來，你必須立刻做出反應。",
+        options:[
+            {
+                text:"立刻伸手接住",
+                correct:true,
+                effects:{shinyu:20},
+                result:"你成功接住了東西。SHINYU 明顯鬆了一口氣。"
+            },
+            {
+                text:"先往旁邊躲",
+                correct:false,
+                effects:{shinyu:-10},
+                result:"東西掉到地上，SHINYU 趕緊確認你有沒有受傷。"
+            }
+        ]
+    },
+
+    {
+        title:"音樂突然停止",
+        description:"舞台彩排時音樂突然停止，所有人的視線都看向你。",
+        options:[
+            {
+                text:"跟著節拍繼續",
+                correct:true,
+                effects:{jihoon:22},
+                result:"你沒有停下來，JIHOON 立刻跟上你的節奏。"
+            },
+            {
+                text:"停下來等待",
+                correct:false,
+                effects:{jihoon:-8},
+                result:"音樂重新開始前，JIHOON 小聲提醒你注意節拍。"
+            }
+        ]
+    },
+
+    {
+        title:"突然被問到的問題",
+        description:"DOHOON 突然問你一個問題，你必須立刻回答。",
+        options:[
+            {
+                text:"認真回答",
+                correct:true,
+                effects:{dohoon:21},
+                result:"DOHOON 聽完後笑得非常開心。"
+            },
+            {
+                text:"故意裝作沒聽見",
+                correct:false,
+                effects:{dohoon:-9},
+                result:"DOHOON 愣了一下，只好自己笑著帶過。"
+            }
+        ]
+    },
+
+    {
+        title:"照片的最佳瞬間",
+        description:"HANJIN 舉起相機，你只有一瞬間可以決定要不要看向鏡頭。",
+        options:[
+            {
+                text:"轉身看向鏡頭",
+                correct:true,
+                effects:{hanjin:22},
+                result:"快門按下的瞬間，HANJIN 忍不住笑了。"
+            },
+            {
+                text:"故意躲開鏡頭",
+                correct:false,
+                effects:{hanjin:-7},
+                result:"照片拍到了你的背影，HANJIN 有點可惜地放下相機。"
+            }
+        ]
+    },
+
+    {
+        title:"耳機只剩一邊",
+        description:"YOUNGJAE 把耳機遞給你，卻只剩下一邊可以使用。",
+        options:[
+            {
+                text:"接過耳機",
+                correct:true,
+                effects:{youngjae:21},
+                result:"你們一起聽完那首歌，YOUNGJAE 的耳朵悄悄紅了。"
+            },
+            {
+                text:"把耳機還回去",
+                correct:false,
+                effects:{youngjae:-6},
+                result:"YOUNGJAE 點點頭，卻明顯有一點失望。"
+            }
+        ]
+    },
+
+    {
+        title:"最後一瓶飲料",
+        description:"KYUNGMIN 和你同時看到冰箱裡最後一瓶喜歡的飲料。",
+        options:[
+            {
+                text:"讓給 KYUNGMIN",
+                correct:true,
+                effects:{kyungmin:22},
+                result:"KYUNGMIN 愣了一下，接著笑得非常開心。"
+            },
+            {
+                text:"先拿走",
+                correct:false,
+                effects:{kyungmin:-8},
+                result:"KYUNGMIN 小聲說：「好吧……下次我要先拿。」"
+            }
+        ]
+    }
+
+];
+
+
+/* ============================================================
+   結局
+============================================================ */
+
+const endings = {
+
+    shinyu:{
+        title:"放學後的那個人",
+        story:()=>[
+            "校門口的夕陽已經變得很柔和。",
+            "SHINYU 和你並肩走在回家的路上。平常總是走得很快的他，今天卻刻意放慢了腳步。",
+            "你忍不住問：「你今天怎麼走這麼慢？」",
+            "他沉默了一下。",
+            "「因為……我想多走一點。」",
+            "你沒有說話，只是陪著他繼續往前。",
+            "走到最熟悉的路口時，他突然停下來。",
+            `「${state.playerName}。」`,
+            "你回頭。",
+            "SHINYU 看著你，像是想說什麼，又猶豫了很久。",
+            "「以前我只是覺得，妳是剛轉來、需要有人照顧的同學。」",
+            "他低下頭，手指輕輕碰了一下自己的後頸。",
+            "「可是後來……我開始習慣每天找妳。」",
+            "「習慣看妳有沒有好好吃飯，習慣放學的時候想知道妳會不會留下來。」",
+            "他抬起頭。",
+            "「現在如果有一天看不到妳，我反而會覺得少了什麼。」",
+            "你笑著問：「所以呢？」",
+            "SHINYU 的耳朵慢慢紅了。",
+            "「所以……以後也讓我一直陪著妳，好嗎？」",
+            "夕陽落在他的肩膀上。",
+            "而你知道，從今天開始，這條回家的路不會再只有一個人。"
+        ]
+    },
+
+    dohoon:{
+        title:"每天都想見到你",
+        story:()=>[
+            "DOHOON 推著腳踏車走在你身旁。",
+            "一路上，他和平常一樣不停說著話。從校慶的趣事，到明天午餐要吃什麼，再到你今天差點被排球砸到的事情。",
+            "直到走到你家附近，他突然安靜下來。",
+            `「${state.playerName}。」`,
+            "你轉頭。",
+            "「我有一件事想問妳。」",
+            "「什麼？」",
+            "他笑了一下。",
+            "「如果明天放學，我也來找妳，妳會不會覺得我很煩？」",
+            "你故意想了一下。",
+            "「可能會。」",
+            "「欸？」",
+            "看著他瞬間僵住的表情，你忍不住笑了。",
+            "「但是如果你不來，我可能會覺得奇怪。」",
+            "DOHOON 安靜了幾秒。",
+            "然後笑得比夕陽還要明亮。",
+            "「那就說好了。」",
+            "他看著你。",
+            "「明天見。」",
+            "「後天也見。」",
+            "「每天都見。」",
+            "那一刻，你突然明白，他想要的從來不只是一起回家。",
+            "他只是想把「每天見到妳」變成理所當然。"
+        ]
+    },
+
+    youngjae:{
+        title:"寫進歌裡的心意",
+        story:()=>[
+            "音樂教室裡只剩下你和 YOUNGJAE。",
+            "窗外的天空已經染成深藍色。",
+            "他坐在鋼琴前，彈起一段你從來沒有聽過的旋律。",
+            "你安靜地聽完。",
+            "「這首歌叫什麼名字？」",
+            "YOUNGJAE 沉默了一下。",
+            "「還沒有名字。」",
+            "你問為什麼。",
+            "他看著琴鍵。",
+            "「因為它原本只是一些很零碎的旋律。」",
+            "「可是最近，我一直想到一個人。」",
+            "你心裡微微一動。",
+            "「那個人是誰？」",
+            "YOUNGJAE 終於抬起頭。",
+            `「${state.playerName}。」`,
+            "你愣住。",
+            "他有些緊張地笑了。",
+            "「我本來不知道怎麼跟妳說。」",
+            "「所以我想……把它寫進歌裡。」",
+            "最後一個音落下。",
+            "你沒有回答，只是笑著坐到他身旁。",
+            "YOUNGJAE 也笑了。",
+            "這一次，他不用再把那些說不出口的心意藏進旋律裡。"
+        ]
+    },
+
+    hanjin:{
+        title:"想替你留下的每一個瞬間",
+        story:()=>[
+            "HANJIN 把最後一張底片放進相簿。",
+            "那本相簿裡，有校園的午後、有突然下雨的校門口、有文藝祭，也有你站在櫻花道下的照片。",
+            "你翻到最後一頁。",
+            "那裡是一張你不知道什麼時候被拍下的照片。",
+            "照片裡的你沒有看鏡頭。",
+            "只是站在窗邊笑。",
+            "你問：「你什麼時候拍的？」",
+            "HANJIN 安靜了一會兒。",
+            "「很久以前。」",
+            "「我那時候就覺得，這個畫面一定要留下來。」",
+            "你抬頭看他。",
+            "「為什麼？」",
+            "他輕輕笑了一下。",
+            "「因為那個時候的妳，看起來很幸福。」",
+            "他把相簿遞給你。",
+            "「以後如果還有很多很多這樣的日子……」",
+            "「我想繼續幫妳記住。」",
+            "窗外的夕陽落在相機上。",
+            "你忽然明白，有些人的喜歡不是轟轟烈烈。",
+            "而是默默替你留下每一個值得記住的瞬間。"
+        ]
+    },
+
+    jihoon:{
+        title:"最重要的舞台夥伴",
+        story:()=>[
+            "舞蹈社的音樂再次響起。",
+            "JIHOON 站在你面前，伸出手。",
+            "「最後一支舞。」",
+            "你問：「為什麼是最後一支？」",
+            "他笑著搖頭。",
+            "「不是今天的最後一支。」",
+            "「是我想跟妳一起跳的第一支。」",
+            "音樂開始。",
+            "你們一起跟著節拍向前。",
+            "沒有觀眾，也沒有比賽。",
+            "只有夕陽、音樂，還有兩個人的腳步。",
+            "結束後，JIHOON 氣喘吁吁地看著你。",
+            `「${state.playerName}。」`,
+            "「嗯？」",
+            "「我以前一直覺得，最好的舞伴應該是最厲害的人。」",
+            "他笑了。",
+            "「但後來我發現，最重要的是那個讓我想一直跳下去的人。」",
+            "他向你伸出手。",
+            "「所以，以後也一起練，好嗎？」",
+            "你握住他的手。",
+            "這一次，你們不只是舞台上的夥伴。",
+            "而是彼此最期待見面的那個人。"
+        ]
+    },
+
+    kyungmin:{
+        title:"我也可以保護你",
+        story:()=>[
+            "放學後的校門口，KYUNGMIN 抱著書包站在你旁邊。",
+            "平常總是吵吵鬧鬧的他，今天卻異常安靜。",
+            "你問：「怎麼了？」",
+            "他搖搖頭。",
+            "「沒什麼。」",
+            "走了一段路後，他突然停下來。",
+            `「${state.playerName}。」`,
+            "「我有一件事想證明。」",
+            "你疑惑地看著他。",
+            "「我不是小孩子。」",
+            "你忍不住笑了。",
+            "「我知道啊。」",
+            "他卻認真地看著你。",
+            "「以前都是妳照顧我。」",
+            "「可是以後……也可以換我照顧妳。」",
+            "他伸手接過你手上的東西。",
+            "「這個我幫妳拿。」",
+            "你故意問：「你確定？」",
+            "KYUNGMIN 立刻抬起頭。",
+            "「當然！」",
+            "走了幾步後，他又小聲補了一句。",
+            "「而且……我想一直當那個可以被妳依靠的人。」",
+            "你看著他泛紅的耳朵。",
+            "原來那個總說自己已經長大的少年，真的已經在不知不覺中變得可靠了。"
+        ]
+    }
+
+};
+
+
+/* ============================================================
+   右側好感度
+============================================================ */
+
+function renderAffection(){
+
+    characterList.innerHTML = "";
+
+    const values =
+        Object.values(state.affection);
+
+    const highest =
+        Math.max(...values);
+
+    Object.keys(characters).forEach(id=>{
+
+        const c = characters[id];
+        const score = state.affection[id];
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "character-card";
+
+        if(score === highest && score > 0){
+            card.classList.add("highest");
+        }
+
+        card.id =
+            "character-card-" + id;
+
+        const photo =
+            document.createElement("div");
+
+        photo.className =
+            "character-photo";
+
+        const img =
+            document.createElement("img");
+
+        img.src = c.image;
+        img.alt = c.name;
+
+        img.onerror = function(){
+
+            this.style.display = "none";
+
+            fallback.style.display =
+                "grid";
+
+        };
+
+        const fallback =
+            document.createElement("div");
+
+        fallback.className =
+            "photo-fallback";
+
+        fallback.textContent =
+            c.name.charAt(0);
+
+        photo.appendChild(img);
+        photo.appendChild(fallback);
+
+
+        const info =
+            document.createElement("div");
+
+        info.className =
+            "character-info";
+
+        info.innerHTML = `
+            <div class="character-name-row">
+                <div class="character-name">
+                    ${escapeHTML(c.name)}
+                </div>
+                <div class="character-score">
+                    ${score}
+                </div>
+            </div>
+
+            <div class="character-cn">
+                ${escapeHTML(c.chinese)}
+            </div>
+
+            <div class="affection-bar">
+                <div
+                    class="affection-fill"
+                    style="width:${score}%">
+                </div>
+            </div>
+
+            <div class="affection-text">
+                <span>HEART</span>
+                <span>${score}/100</span>
+            </div>
+        `;
+
+        card.appendChild(photo);
+        card.appendChild(info);
+
+        characterList.appendChild(card);
+
+    });
+
+}
+
+
+/* ============================================================
+   建立隨機劇情
+============================================================ */
+
+function buildRun(){
+
+    const shuffledScenes =
+        shuffle(scenePool);
+
+    state.runScenes =
+        shuffledScenes.slice(0,15);
+
+    state.currentSceneIndex = 0;
+
+    state.qteQueue =
+        shuffle(qtePool).slice(0,2);
+
+    /*
+       QTE 出現在不同的劇情位置，
+       且至少相隔三個場景。
+    */
+
+    const possiblePairs = [];
+
+    for(let a=2;a<=7;a++){
+
+        for(let b=a+3;b<=10;b++){
+
+            possiblePairs.push([a,b]);
+
+        }
+
+    }
+
+    const pair =
+        possiblePairs[
+            Math.floor(
+                Math.random()*possiblePairs.length
+            )
+        ];
+
+    state.qteTriggerPositions =
+        pair;
+
+    state.qteUsed = 0;
+
+}
+
+
+/* ============================================================
+   顯示場景
+============================================================ */
+
+function renderScene(){
+
+    const scene =
+        state.runScenes[state.currentSceneIndex];
+
+    if(!scene){
+
+        showBestEnding();
+
+        return;
+
+    }
+
+    state.sceneChoiceMade = false;
+
+    sceneIndex.textContent =
+        `SCENE ${String(state.currentSceneIndex+1).padStart(2,"0")} / 15`;
+
+    sceneTitle.textContent =
+        scene.title;
+
+    sceneTag.textContent =
+        scene.tag;
+
+
+    situation.innerHTML =
+        scene.situation
+            .map(text=>`<p>${escapeHTML(text)}</p>`)
+            .join("");
+
+
+    characterEntrance.innerHTML =
+        `<strong>登場角色：</strong> ${
+            scene.characters
+                .map(id=>characters[id].name)
+                .join(" · ")
+        }`;
+
+
+    dialogue.innerHTML =
+        scene.dialogue
+            .map(line=>`
+                <div class="dialogue-line">
+                    <strong>
+                        ${escapeHTML(line.speaker)}
+                    </strong>
+                    ${escapeHTML(line.text)}
+                </div>
+            `)
+            .join("");
+
+
+    choiceList.innerHTML = "";
+
+    scene.choices.forEach((choice,index)=>{
+
+        const button =
+            document.createElement("button");
+
+        button.className =
+            "choice-button";
+
+        button.textContent =
+            `${index+1}. ${choice.text}`;
+
+        button.addEventListener(
+            "click",
+            ()=>handleChoice(choice,button)
+        );
+
+        choiceList.appendChild(button);
+
+    });
+
+}
+
+
+/* ============================================================
+   好感度變化
+============================================================ */
+
+function applyEffects(effects){
+
+    const changes = {};
+
+    Object.keys(effects).forEach(id=>{
+
+        if(!characters[id]){
+            return;
+        }
+
+        const old =
+            state.affection[id];
+
+        const amount =
+            effects[id];
+
+        let next =
+            old + amount;
+
+        /*
+           在兩次 QTE 完成前，
+           暫時不讓一般劇情直接突破 98，
+           避免提前結束導致 QTE 無法出現。
+        */
+
+        if(state.qteUsed < 2){
+
+            next =
+                Math.min(98,next);
+
+        }else{
+
+            next =
+                Math.min(100,next);
+
+        }
+
+        next =
+            Math.max(0,next);
+
+        state.affection[id] =
+            next;
+
+        changes[id] =
+            next-old;
+
+    });
+
+    return changes;
+
+}
+
+
+/* ============================================================
+   檢查結局
+============================================================ */
+
+function checkEnding(){
+
+    /*
+       必須先完成兩個 QTE，
+       再允許 100 好感度結束。
+    */
+
+    if(state.qteUsed < 2){
+        return null;
+    }
+
+    for(const id of Object.keys(state.affection)){
+
+        if(state.affection[id] >= 100){
+
+            return id;
+
+        }
+
+    }
+
+    return null;
+
+}
+
+
+/* ============================================================
+   顯示中央結果
+============================================================ */
+
+function showResult(choice,changes){
+
+    const affectedIds =
+        Object.keys(changes)
+            .filter(id=>changes[id] !== 0);
+
+    let mainId =
+        affectedIds[0];
+
+    if(!mainId){
+        mainId =
+            Object.keys(choice.effects)[0];
+    }
+
+    const c =
+        characters[mainId];
+
+
+    resultHeading.innerHTML = `
+        <div class="result-avatar">
+            <img
+                src="${c.image}"
+                alt="${escapeHTML(c.name)}"
+                onerror="this.style.display='none'">
+        </div>
+
+        <div class="result-title-area">
+            <small>YOUR CHOICE · RESULT</small>
+            <h2>${escapeHTML(c.name)} 的反應</h2>
+        </div>
+    `;
+
+
+    resultStory.innerHTML =
+        choice.result
+            .map(text=>`<p>${escapeHTML(text)}</p>`)
+            .join("");
+
+
+    changeList.innerHTML = "";
+
+    affectedIds.forEach(id=>{
+
+        const value =
+            changes[id];
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "change-item";
+
+        const name =
+            characters[id].name;
+
+        const valueText =
+            value > 0
+                ? `+${value} ♥`
+                : `${value} ♥`;
+
+        row.innerHTML = `
+            <span class="change-item-name">
+                ${escapeHTML(name)}
+            </span>
+
+            <span class="${
+                value > 0
+                    ? "change-positive"
+                    : "change-negative"
+            }">
+                ${valueText}
+            </span>
+        `;
+
+        changeList.appendChild(row);
+
+    });
+
+
+    resultOverlay.style.display =
+        "flex";
+
+}
+
+
+/* ============================================================
+   選擇處理
+============================================================ */
+
+function handleChoice(choice,button){
+
+    if(state.sceneChoiceMade){
+        return;
+    }
+
+    state.sceneChoiceMade = true;
+
+    const buttons =
+        document.querySelectorAll(".choice-button");
+
+    buttons.forEach(btn=>{
+        btn.disabled = true;
+    });
+
+
+    const changes =
+        applyEffects(choice.effects);
+
+    renderAffection();
+
+    showResult(choice,changes);
+
+}
+
+
+/* ============================================================
+   繼續劇情
+============================================================ */
+
+continueButton.addEventListener(
+    "click",
+    ()=>{
+
+        resultOverlay.style.display =
+            "none";
+
+        const ending =
+            checkEnding();
+
+        if(ending){
+
+            showEnding(ending);
+
+            return;
+
+        }
+
+
+        /*
+           這一場如果剛好是 QTE 位置，
+           才開啟 QTE。
+        */
+
+        if(
+            state.qteTriggerPositions.includes(
+                state.currentSceneIndex
+            ) &&
+            state.qteUsed < 2
+        ){
+
+            startQTE();
+
+            return;
+
+        }
+
+
+        advanceScene();
+
+    }
+);
+
+
+/* ============================================================
+   下一個場景
+============================================================ */
+
+function advanceScene(){
+
+    state.currentSceneIndex++;
+
+    if(
+        state.currentSceneIndex >=
+        state.runScenes.length
+    ){
+
+        showBestEnding();
+
+        return;
+
+    }
+
+    renderScene();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* ============================================================
+   QTE
+============================================================ */
+
+let qteInterval = null;
+let qteTimeout = null;
+let qteTime = 8;
+
+
+function startQTE(){
+
+    const event =
+        state.qteQueue[state.qteUsed];
+
+    if(!event){
+
+        advanceScene();
+
+        return;
+
+    }
+
+    state.waitingForQTE = true;
+    state.qteResolved = false;
+
+    qteTitle.textContent =
+        event.title;
+
+    qteDescription.textContent =
+        event.description;
+
+    qteResult.classList.add("hidden");
+    qteContinue.classList.add("hidden");
+
+    qteOptions.innerHTML = "";
+
+    event.options.forEach(option=>{
+
+        const button =
+            document.createElement("button");
+
+        button.className =
+            "qte-button";
+
+        button.textContent =
+            option.text;
+
+        button.addEventListener(
+            "click",
+            ()=>resolveQTE(option)
+        );
+
+        qteOptions.appendChild(button);
+
+    });
+
+
+    qteOverlay.style.display =
+        "flex";
+
+    qteTime = 8;
+
+    qteTimer.textContent =
+        qteTime;
+
+    qteProgressBar.style.width =
+        "100%";
+
+
+    clearInterval(qteInterval);
+    clearTimeout(qteTimeout);
+
+
+    qteInterval =
+        setInterval(()=>{
+
+            qteTime--;
+
+            qteTimer.textContent =
+                qteTime;
+
+            qteProgressBar.style.width =
+                `${(qteTime/8)*100}%`;
+
+            if(qteTime <= 0){
+
+                clearInterval(qteInterval);
+
+            }
+
+        },1000);
+
+
+    qteTimeout =
+        setTimeout(()=>{
+
+            if(!state.qteResolved){
+
+                resolveQTE({
+                    timeout:true,
+                    effects:{},
+                    result:"你沒有及時做出反應，事情就這樣慢慢過去了。"
+                });
+
+            }
+
+        },8000);
+
+}
+
+
+/* ============================================================
+   QTE 結果
+============================================================ */
+
+function resolveQTE(option){
+
+    if(state.qteResolved){
+        return;
+    }
+
+    state.qteResolved = true;
+
+    clearInterval(qteInterval);
+    clearTimeout(qteTimeout);
+
+
+    const buttons =
+        document.querySelectorAll(".qte-button");
+
+    buttons.forEach(btn=>{
+        btn.disabled = true;
+    });
+
+
+    const changes =
+        applyEffects(option.effects || {});
+
+    /*
+       QTE 完成次數在這裡增加。
+    */
+
+    state.qteUsed++;
+
+    state.waitingForQTE = false;
+
+    renderAffection();
+
+
+    const changeHTML =
+        Object.keys(changes)
+            .filter(id=>changes[id] !== 0)
+            .map(id=>{
+
+                const value =
+                    changes[id];
+
+                return `
+                    <p>
+                        <strong>
+                            ${escapeHTML(characters[id].name)}
+                        </strong>
+
+                        <span class="${
+                            value > 0
+                                ? "change-positive"
+                                : "change-negative"
+                        }">
+                            ${value > 0 ? "+" : ""}${value} ♥
+                        </span>
+                    </p>
+                `;
+
+            })
+            .join("");
+
+
+    qteResult.innerHTML = `
+        <p>${escapeHTML(option.result)}</p>
+        ${changeHTML}
+    `;
+
+    qteResult.classList.remove("hidden");
+
+    qteContinue.classList.remove("hidden");
+
+}
+
+
+/* ============================================================
+   QTE 繼續
+============================================================ */
+
+qteContinue.addEventListener(
+    "click",
+    ()=>{
+
+        qteOverlay.style.display =
+            "none";
+
+        qteResult.classList.add("hidden");
+
+        qteContinue.classList.add("hidden");
+
+        qteOptions.innerHTML = "";
+
+        const ending =
+            checkEnding();
+
+        if(ending){
+
+            showEnding(ending);
+
+            return;
+
+        }
+
+        advanceScene();
+
+    }
+);
+
+
+/* ============================================================
+   顯示結局
+============================================================ */
+
+function showEnding(id){
+
+    state.ending = id;
+
+    gameScreen.style.display =
+        "none";
+
+    endingScreen.style.display =
+        "block";
+
+
+    const c =
+        characters[id];
+
+    const ending =
+        endings[id];
+
+
+    endingPhoto.innerHTML = `
+        <img
+            src="${c.image}"
+            alt="${escapeHTML(c.name)}"
+            onerror="this.style.display='none'">
+    `;
+
+
+    endingTitle.textContent =
+        ending.title;
+
+    endingCharacter.textContent =
+        `${c.name} · ${c.chinese} · ${state.affection[id]} / 100`;
+
+
+    endingStory.innerHTML =
+        ending.story()
+            .map(text=>`<p>${escapeHTML(text)}</p>`)
+            .join("");
+
+
+    finalScores.innerHTML = "";
+
+    Object.keys(characters).forEach(characterId=>{
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "final-score";
+
+        card.innerHTML = `
+            <strong>
+                ${escapeHTML(characters[characterId].name)}
+            </strong>
+            <span>
+                ${state.affection[characterId]}
+            </span>
+        `;
+
+        finalScores.appendChild(card);
+
+    });
+
+
+    playEndingMusic(id);
+
+}
+
+
+/* ============================================================
+   如果 15 場都結束仍沒有 100
+============================================================ */
+
+function showBestEnding(){
+
+    let bestId =
+        Object.keys(state.affection)
+            .sort(
+                (a,b)=>
+                    state.affection[b] -
+                    state.affection[a]
+            )[0];
+
+    showEnding(bestId);
+
+}
+
+
+/* ============================================================
+   結局音樂
+============================================================ */
+
+function playEndingMusic(id){
+
+    const src =
+        endingMusic[id];
+
+    if(!src){
+        return;
+    }
+
+    endingBGM.pause();
+
+    endingBGM.currentTime = 0;
+
+    endingBGM.src = src;
+
+    endingBGM.volume = 0;
+
+    const playPromise =
+        endingBGM.play();
+
+    if(playPromise){
+
+        playPromise.catch(
+            ()=>{}
+        );
+
+    }
+
+
+    let volume = 0;
+
+    const fade =
+        setInterval(()=>{
+
+            volume += .05;
+
+            endingBGM.volume =
+                Math.min(volume,.8);
+
+            if(volume >= .8){
+
+                clearInterval(fade);
+
+            }
+
+        },250);
+
+}
+
+
+/* ============================================================
+   下載結局卡
+============================================================ */
+
+downloadButton.addEventListener(
+    "click",
+    downloadFinalCard
+);
+
+
+function downloadFinalCard(){
+
+    const canvas =
+        document.createElement("canvas");
+
+    canvas.width = 1200;
+    canvas.height = 1500;
+
+    const ctx =
+        canvas.getContext("2d");
+
+    const gradient =
+        ctx.createLinearGradient(
+            0,0,
+            1200,1500
+        );
+
+    gradient.addColorStop(
+        0,
+        "#b9eaff"
+    );
+
+    gradient.addColorStop(
+        .55,
+        "#eefaff"
+    );
+
+    gradient.addColorStop(
+        1,
+        "#fff9dd"
+    );
+
+    ctx.fillStyle =
+        gradient;
+
+    ctx.fillRect(
+        0,0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    ctx.fillStyle =
+        "rgba(255,255,255,.8)";
+
+    ctx.beginPath();
+    ctx.arc(1050,130,150,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(120,1360,180,0,Math.PI*2);
+    ctx.fill();
+
+
+    ctx.textAlign =
+        "center";
+
+    ctx.fillStyle =
+        "#2d7398";
+
+    ctx.font =
+        "bold 34px Arial";
+
+    ctx.fillText(
+        "SPARKLING HIGH",
+        600,
+        80
+    );
+
+
+    const id =
+        state.ending;
+
+    const c =
+        characters[id];
+
+    const ending =
+        endings[id];
+
+
+    ctx.font =
+        "bold 52px Arial";
+
+    ctx.fillText(
+        ending.title,
+        600,
+        150
+    );
+
+
+    ctx.font =
+        "bold 28px Arial";
+
+    ctx.fillStyle =
+        "#4e8dab";
+
+    ctx.fillText(
+        `${c.name} · ${c.chinese}`,
+        600,
+        200
+    );
+
+
+    ctx.fillStyle =
+        "rgba(255,255,255,.88)";
+
+    ctx.fillRect(
+        100,
+        250,
+        1000,
+        950
+    );
+
+
+    ctx.fillStyle =
+        "#3d6f84";
+
+    ctx.font =
+        "bold 28px Arial";
+
+    ctx.fillText(
+        `「${state.playerName}」的最終結果`,
+        600,
+        310
+    );
+
+
+    ctx.font =
+        "24px Arial";
+
+    ctx.fillStyle =
+        "#628594";
+
+    let y = 380;
+
+    Object.keys(characters)
+        .forEach(characterId=>{
+
+            const score =
+                state.affection[characterId];
+
+            ctx.textAlign =
+                "left";
+
+            ctx.fillText(
+                characters[characterId].name,
+                190,
+                y
+            );
+
+            ctx.textAlign =
+                "right";
+
+            ctx.fillText(
+                `${score} / 100`,
+                1010,
+                y
+            );
+
+
+            ctx.fillStyle =
+                "#e2f1f6";
+
+            ctx.fillRect(
+                190,
+                y+20,
+                820,
+                18
+            );
+
+
+            ctx.fillStyle =
+                characterId === id
+                    ? "#ffb1c2"
+                    : "#65bce6";
+
+            ctx.fillRect(
+                190,
+                y+20,
+                820*(score/100),
+                18
+            );
+
+
+            ctx.fillStyle =
+                "#628594";
+
+            y += 115;
+
+        });
+
+
+    ctx.textAlign =
+        "center";
+
+    ctx.fillStyle =
+        "#7c9dab";
+
+    ctx.font =
+        "20px Arial";
+
+    ctx.fillText(
+        "OUR FIRST LIGHT · FINAL CHAPTER",
+        600,
+        1290
+    );
+
+
+    const link =
+        document.createElement("a");
+
+    link.download =
+        "Sparkling-High-Final-Result.png";
+
+    link.href =
+        canvas.toDataURL("image/png");
+
+    link.click();
+
+}
+
+
+/* ============================================================
+   重新開始
+============================================================ */
+
+restartButton.addEventListener(
+    "click",
+    ()=>{
+
+        endingBGM.pause();
+
+        endingBGM.currentTime = 0;
+
+        state.playerName = "";
+
+        Object.keys(state.affection)
+            .forEach(id=>{
+                state.affection[id] = 0;
+            });
+
+        state.runScenes = [];
+        state.currentSceneIndex = 0;
+        state.qteQueue = [];
+        state.qteUsed = 0;
+        state.qteTriggerPositions = [];
+        state.sceneChoiceMade = false;
+        state.gameStarted = false;
+        state.ending = null;
+        state.waitingForQTE = false;
+        state.qteResolved = false;
+
+        endingScreen.style.display =
+            "none";
+
+        gameScreen.style.display =
+            "none";
+
+        resultOverlay.style.display =
+            "none";
+
+        qteOverlay.style.display =
+            "none";
+
+        nicknameInput.value = "";
+
+        startScreen.style.display =
+            "flex";
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+    }
+);
+
+
+/* ============================================================
+   開始遊戲
+============================================================ */
+
+startButton.addEventListener(
+    "click",
+    startGame
+);
+
+
+nicknameInput.addEventListener(
+    "keydown",
+    event=>{
+
+        if(event.key === "Enter"){
+            startGame();
+        }
+
+    }
+);
+
+
+function startGame(){
+
+    const name =
+        nicknameInput.value.trim();
+
+    if(!name){
+
+        nicknameInput.focus();
+
+        nicknameInput.placeholder =
+            "請先輸入你的暱稱 ✦";
+
+        return;
+
+    }
+
+
+    state.playerName =
+        name;
+
+    Object.keys(state.affection)
+        .forEach(id=>{
+            state.affection[id] = 0;
+        });
+
+
+    state.gameStarted = true;
+
+    buildRun();
+
+    renderAffection();
+
+    renderScene();
+
+
+    startScreen.style.display =
+        "none";
+
+    gameScreen.style.display =
+        "block";
+
+    endingScreen.style.display =
+        "none";
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+</script>
+
+</body>
+</html>
